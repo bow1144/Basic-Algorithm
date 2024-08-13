@@ -1,6 +1,6 @@
 # 单源最短路的朴素 *Dijkstra* 算法
 > 题源：[AcWing 849](https://www.acwing.com/problem/content/description/851/)  
-> tags：Dijkstra算法，最短路问题
+> tags：Dijkstra算法  最短路问题  模板题  
 
 ## 题目要求
 给定一个 n个点 m条边的有向图，图中可能存在重边和自环，所有边权均为正值。  
@@ -30,3 +30,180 @@ $1 \leq m \leq 10^5$
 ```
 3
 ```
+
+## 整体思路
+1. 看题：可得是**单源最短路问题**，存在带权边，重边，自环，可以用 **朴素*Dijkstra*算法** 解决
+2. 看数据范围：有 $n^2 \approx m$ ，应用邻接矩阵存储图
+
+## 整体代码
+```
+# include<iostream>
+# include<cstring>
+# include<algorithm>
+
+using namespace std;
+
+const int N = 510;
+int n, m, x, y, z;
+int dist[N];
+bool st[N];
+int g[N][N];
+
+int dijkstra(){
+    memset(dist,0x3f,sizeof(dist)); //距离数组的初始化
+    dist[1] = 0;
+    for(int i=0;i<n;i++){
+        int t=-1;
+        
+        for(int j=1;j<=n;j++){ //找到距离最小的点
+            if(!st[j] && (t==-1 || dist[t]>dist[j]))
+                t = j; 
+        }
+        
+        st[t] = true; //确定t已经取到最小距离
+        
+        for(int j=1;j<=n;j++){
+            dist[j] = min(dist[j],dist[t]+g[t][j]);
+        }
+    }
+    if(dist[n] == 0x3f3f3f3f) return -1;
+    return dist[n];
+}
+
+int main(void){
+    scanf("%d%d",&n ,&m);
+    memset(g,0x3f,sizeof(g)); //图的初始化
+    
+    while(m--){
+        scanf("%d%d%d",&x,&y,&z);
+        g[x][y] = min(g[x][y],z); //防重边
+    }
+    
+    int ans = dijkstra();
+    cout<<ans;
+    
+    return 0;
+}
+```
+
+## 代码分析
+### 1. 变量定义
+```
+const int N = 510;
+int n, m, x, y, z;
+int dist[N];
+bool st[N];
+int g[N][N];
+```
+* dist 数组表示点n到1号点的距离
+* st 数组表示判断n点是否**已经确定是最短路径**
+* g 矩阵存储图和权重
+
+### 2. 朴素 *Dijkstra* 算法
+```
+int dijkstra(){
+    memset(dist,0x3f,sizeof(dist)); //距离数组的初始化
+    dist[1] = 0;
+    for(int i=0;i<n;i++){
+        int t=-1;
+        
+        for(int j=1;j<=n;j++){ //找到距离最小的点
+            if(!st[j] && (t==-1 || dist[t]>dist[j]))
+                t = j; 
+        }
+        
+        st[t] = true; //确定t已经取到最小距离
+        
+        for(int j=1;j<=n;j++){
+            dist[j] = min(dist[j],dist[t]+g[t][j]);
+        }
+    }
+    if(dist[n] == 0x3f3f3f3f) return -1;
+    return dist[n];
+}
+ ```
+1. 初始化
+  ```
+    memset(dist,0x3f,sizeof(dist)); //距离数组的初始化
+    dist[1] = 0;
+  ```
+    * 将距离数组初始化为最大
+    * 将第一个点（源点距离他的距离设置为0
+
+2. 主循环
+   ```
+   for(int i=0;i<n;i++){
+        int t=-1;
+   ...
+   }
+   ```
+   * 单纯的循环n次
+   * 每次循环的作用：找到离源点距离最小的点、标记、更新其它点的距离
+   * 变量t的作用是**存储距离最小的点**
+
+3. 找到距离最小的点并将其锁定
+   ```
+   for(int j=1;j<=n;j++){ //找到距离最小的点
+       if(!st[j] && (t==-1 || dist[t]>dist[j]))
+           t = j; 
+        }
+   st[t] = true; //确定t已经取到最小距离
+   ```
+
+ 4. 更新其他点的距离
+    ``` 
+    for(int j=1;j<=n;j++){
+        dist[j] = min(dist[j],dist[t]+g[t][j]);
+    }
+    ```
+
+5. 返回
+   ```
+   if(dist[n] == 0x3f3f3f3f) return -1;
+   return dist[n];
+   ```
+
+### main 函数
+```
+int main(void){
+    scanf("%d%d",&n ,&m);
+    memset(g,0x3f,sizeof(g)); //图的初始化
+    
+    while(m--){
+        scanf("%d%d%d",&x,&y,&z);
+        g[x][y] = min(g[x][y],z); //防重边
+    }
+    
+    int ans = dijkstra();
+    cout<<ans;
+    
+    return 0;
+}
+```
+* 注意在输入边时要与自身比较以**防重边**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
