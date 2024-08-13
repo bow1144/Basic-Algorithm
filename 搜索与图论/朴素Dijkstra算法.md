@@ -182,7 +182,80 @@ int main(void){
 ```
 * 注意在输入边时要与自身比较以**防重边**
 
+## 扩展：堆优化的 *Dijkstra* 算法
+相比于朴素的 *Dijkstra* 算法，堆优化算法使用了优先队列，不再用**第一个循环**寻找当前最接近的点了  
+* 朴素算法： $O(n^2)$  
+* 堆优化方法： $O(mlog(n))$   
 
+```
+# include <iostream>
+# include <algorithm>
+# include <cstring>
+# include <queue>
+
+using namespace std;
+typedef pair<int, int> PII;
+
+const int N = 2e5 + 10;
+
+int n, m;
+int dist[N];
+int h[N], e[N], w[N], ne[N], idx;
+bool st[N];
+
+void add(int x,int y,int z){
+    e[idx] = y, w[idx] = z, ne[idx] = h[x], h[x] = idx++;
+    return;
+}
+
+int dijkstra(void){
+    // 初始化
+    priority_queue<PII,vector<PII>,greater<PII>> heap;
+    memset(dist,0x3f,sizeof(dist));
+    dist[1] = 0;
+    heap.push({0,1});
+    
+    
+    while(heap.size()){
+        // 出堆
+        auto t = heap.top();
+        heap.pop();
+        int ver = t.second, distance = t.first;
+        
+        // 标记
+        if(st[ver]) continue;
+        st[ver] = true;
+        
+        for(int i=h[ver];i!=-1;i=ne[i]){
+            int j = e[i]; // j是点
+            if(dist[j]>dist[ver]+w[i]){ // 需要更新
+                dist[j] = dist[ver]+w[i];
+                heap.push({dist[j], j});
+            }
+        }
+    }
+    if(dist[n] == 0x3f3f3f3f) return -1;
+    return dist[n];
+}
+
+
+int main(void){
+    cin>>n>>m;
+    
+    memset(h, -1, sizeof h);
+    
+    while(m--){
+        int x, y, z;
+        scanf("%d%d%d",&x,&y,&z);
+        add(x,y,z);
+    }
+    
+    int ans = dijkstra();
+    printf("%d", ans);
+    
+    return 0;
+}
+```
 
 
 
