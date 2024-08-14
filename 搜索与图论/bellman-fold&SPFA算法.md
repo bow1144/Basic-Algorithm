@@ -114,6 +114,7 @@ int bellman_fold(){
 
 ```
 * k限制了最多经过的边
+* 因为 *B-F* 算法没有拓扑序（SPFA有），所以要用if(dist[n]>0x3f3f3f3f/2)判断
 
 
 
