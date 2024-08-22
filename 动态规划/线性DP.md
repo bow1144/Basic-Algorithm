@@ -86,9 +86,32 @@ int main(void){
 }
 ```
 
+## 最长公共子序列
+> [AcWing 897. 最长公共子序列](https://www.acwing.com/problem/content/899/)
 
+### 题目大意
+求既是A的子序列，又是B的子序列的自负床最大长度
 
+### 思路导图
+![最长公共子序列](image/最长公共子序列.png)
 
+### 整体代码
+```
+int main(void){
+    int n, m;
+    cin>>n>>m;
+    scanf("%s%s",a+1,b+1);
+    
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<=m;j++){
+            f[i][j] = max(f[i-1][j], f[i][j-1]);
+            if(a[i] == b[j]) f[i][j] = max(f[i][j], f[i-1][j-1]+1);
+        }
+    }
+    cout<<f[n][m]<<endl;
+    return 0;
+}
+```
 
 
 
