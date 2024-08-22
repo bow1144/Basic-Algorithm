@@ -14,3 +14,47 @@
 如果第二步是先合并 2、3堆，则代价为 7，得到 4 7，最后一次合并代价为 11,总代价为 4+7+11=22。
 
 问题是：找出一种合理的方法，使总的代价最小，输出最小代价。
+
+## 思路导图
+![石子合并](image/石子合并.png)
+
+## 算法代码
+```
+# include <bits/stdc++.h>
+
+using namespace std;
+
+const int N = 310;
+
+int s[N], f[N][N];
+
+int main(void){
+    int n;
+    cin>>n;
+    
+    for(int i=1;i<=n;i++) scanf("%d",&s[i]);
+    
+    for(int i=1;i<=n;i++) s[i] += s[i-1];
+    
+    for(int len=2;len<=n;len++){
+        for(int i=1;i<=n-len+1;i++){ //i 是有范围的
+            int l = i, r = i + len - 1;
+            f[l][r] = 1e9; // 注意要初始化f[l][r]
+            for(int k=l;k<r;k++){
+                f[l][r] = min(f[l][r],f[l][k]+f[k+1][r]+s[r]-s[l-1]);
+            }
+        }
+    }
+    
+    cout<<f[1][n]<<endl;
+    return 0;
+}
+```
+
+## 算法思路
+* 在确定头尾的情况下，不管怎么合并的代价相同: `s = s[r] + s[l-1]`
+
+
+
+
+
