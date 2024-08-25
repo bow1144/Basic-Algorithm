@@ -19,3 +19,70 @@
 4. **细节处理**
    - `f[][]`要用 $+\infty$ 初始化
    - 状态依赖`f[i-(1<<j)][k]`，要求了`i`必须从小到大遍历，故`i`,`j`的遍历顺序不能相反
+   - 位运算优先级低于加减，位运算要括号
+   - `f[][]`中的二进制维应用 `1<<N` 定义
+
+## 思路导图
+![最短Hamilton路径](image/最短Hamilton路径.png)
+
+## 整体代码
+```
+#include <bits/stdc++.h>
+
+using namespace std;
+
+const int N = 21, M = 1<<N;
+
+int w[N][N];
+int f[M][N]; // 记得状态压缩维用M
+
+int main(void){
+    int n;
+    cin>>n;
+    memset(f,0x3f,sizeof f);
+    f[1][0] = 0; // 记得预处理
+    
+    for(int i=0;i<n;i++)
+        for(int j=0;j<n;j++)
+            scanf("%d",&w[i][j]);
+        
+    for(int i=0;i<1<<n;i++){ //从0开始，所有方案0号位都为1
+        for(int j=0;j<n;j++){
+            if(i>>j&1){
+                for(int k=0;k<n;k++){
+                    if((i-(1<<j))>>k&1){
+                        f[i][j] = min(f[i][j],f[i-(1<<j)][k]+w[k][j]);
+                    }
+                }
+            }
+        }
+    }
+    
+    cout<<f[(1<<n)-1][n-1]<<endl;
+    return 0;
+}
+```
+
+## 细节分析
+1. `for(int i=0;i<1<<n;i++)` 表示遍历路径
+2. `for(int j=0;j<n;j++)   if(i>>j&1)` 表示找到`i`路径的所有可能终点
+3. `for(int k=0;k<n;k++)   if((i-(1<<j))>>k&1)` 表示找到所有的‘倒数第二点’
+
+## 算法优化
+1. 将`for(int i=0;i<1<<n;i++)`优化为`for(int i=1;i<1<<n;i+=2)`，将`i`的第一位恒等于1，表示路径永远从0开始
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
