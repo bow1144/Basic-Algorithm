@@ -90,7 +90,7 @@ int main(void){
 > [AcWing 897. 最长公共子序列](https://www.acwing.com/problem/content/899/)
 
 ### 题目大意
-求既是A的子序列，又是B的子序列的自负床最大长度
+求既是A的子序列，又是B的子序列的字符串最大长度
 
 ### 思路导图
 ![最长公共子序列](image/最长公共子序列.png)
