@@ -67,6 +67,7 @@ int main(void){
 1. `for(int i=0;i<1<<n;i++)` 表示遍历路径
 2. `for(int j=0;j<n;j++)   if(i>>j&1)` 表示找到`i`路径的所有可能终点
 3. `for(int k=0;k<n;k++)   if((i-(1<<j))>>k&1)` 表示找到所有可能的‘倒数第二点’
+4. `const int N = 21, M = 1<<N;` 在N取22时会报MLE
 
 ## 算法优化
 1. 将`for(int i=0;i<1<<n;i++)`优化为`for(int i=1;i<1<<n;i+=2)`，将`i`的第一位恒等于1，表示路径永远从0开始
