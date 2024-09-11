@@ -4,7 +4,8 @@
 哈夫曼树的普遍用法是**树的带权路径长度最小**
 
 ## 合并果子
-> [AcWing 148. 合并果子](https://www.acwing.com/problem/content/150/)  
+> [AcWing 148. 合并果子](https://www.acwing.com/problem/content/150/)
+
 ![合并果子题目](image/合并果子题目.png)
 
 ### 思路
